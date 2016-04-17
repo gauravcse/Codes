@@ -1,0 +1,141 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+int equality(int n){
+	if(n>=90)
+	return 10;
+	else if(n>=80 && n<90)
+	return 9;
+	else if(n>=70 && n<80)
+	return 8;
+	else if(n>=60 && n<70)
+	return 7;
+	else if(n>=50 && n<60)
+	return 6;
+	else if(n>=40 && n<50)
+	return 5;
+}
+
+float cgpa(int a,int b,int c,int d,int e){
+	if(a<40 || b<40 || c<40 || d<40 || e<40)
+	return 0.0;
+	else
+	{
+		return (equality(a)+equality(b)+equality(c)+equality(d)+equality(e))/5;
+	}
+}
+
+struct node{
+	string name;
+	int roll;
+	float key;
+	node* next;
+};
+
+
+class Priority_queue{
+
+private:
+	node *front;
+public:
+	Priority_queue(){
+		front=NULL;
+	}
+
+	void push(string a,int b,float cgpa){
+	node *t,*q;
+	t= new node;
+	t->name=a;
+	t->roll=b;
+	t->key=cgpa;
+	if(front==NULL || cgpa>front->key){
+	t->next=front;
+	front=t;
+	}
+	else{
+	q=front;
+	while(q->next!=NULL && q->next->key>cgpa)
+	q=q->next;	
+	t->next=q->next;
+	q->next=t;
+	}
+}
+										
+	float pop(){
+	node *t;
+	t=front;
+	free(front);
+	front=t->next;
+	}
+
+	void display(){
+	int i=0;
+	node *t;
+	t=front;
+	if(front==NULL)
+	cout<<"No student admitted yet"<<endl;
+	else{
+			cout<<"__________________________________________________________"<<endl;
+	cout<<setw(15)<<"No"<<setw(15)<<"Name"<<setw(15)<<"Roll"<<setw(15)<<"CGPA"<<endl;
+	cout<<"__________________________________________________________"<<endl;
+	while(t!=NULL)
+	{
+	i++;
+	string x=t->name;
+	int a= t->roll;
+	float b=t->key;
+	cout<<setw(15)<<i<<setw(15)<<x<<setw(15)<<a<<setw(15)<<b<<endl;
+	t=t->next;
+	if(t==NULL)
+	break;
+	}
+		cout<<"__________________________________________________________"<<endl;
+	}
+	
+	}									
+};
+
+
+int main(){
+	Priority_queue A();
+	char ch='y';
+	while(ch=='y'){
+		cout<<"Enter 1 to push"<<endl<<"Enter 2 to pop"<<endl<<"Enter 3 to display"<<endl;
+		int val;
+		cin>>val;
+		if(val==1){
+			cout<<"Enter name"<<endl;
+			string a;
+			cin>>a;
+			cout<<"Enter roll"<<endl;
+			int r;
+			cin>>r;
+			cout<<"Enter marks of the subjects"<<endl;
+			int i,marks[5];
+			for(i=0;i<5;i++)
+			{
+				cout<<"Enter marks of Subject "<<i<<":"<<endl;
+				cin>>marks[i];
+				while(marks[i]>100 || marks[i]<0){
+						cout<<"Invalid marks"<<endl;
+						cout<<"Enter marks of Subject "<<i<<":"<<endl;
+						cin>>marks[i];
+				}
+			}
+			float x=cgpa(marks[0],marks[1],marks[2],marks[3],marks[4]);
+			cout<<"CGPA of "<<a<<"is :"<<x<<endl;
+			A.push(a,r,x);
+		}
+		else if(val==2){
+			A.pop();
+		}
+		else if(val==3)
+		A.display();
+		cout<<"Enter y to continue or n to stop"<<endl;
+		cin>>ch;
+		if(ch=='n')
+		break;
+	}
+	return 0;
+}
+
