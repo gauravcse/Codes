@@ -1,0 +1,1 @@
+1. Find max index difference j-i such that a[j]>a[i] and j>i. (ArrIJ)
